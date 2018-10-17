@@ -5,6 +5,13 @@
 
 int main(void)
 {
+    const char* displaystring = getenv("DISPLAY");
+    if( displaystring == NULL )
+    {
+        // Not running under X, do nothing
+        return 0;
+    }
+
     const char* window_idstring = getenv("WINDOWID");
     if( window_idstring == NULL )
     {
@@ -20,15 +27,7 @@ int main(void)
     }
 
 
-    Display* display;
-    const char* displaystring = getenv("DISPLAY");
-    if( displaystring == NULL )
-    {
-        fprintf(stderr, "No DISPLAY set\n");
-        return 1;
-    }
-
-    display = XOpenDisplay(displaystring);
+    Display* display = XOpenDisplay(displaystring);
     if( display == NULL )
     {
         fprintf(stderr, "Couldn't open display '%s\n", displaystring);
